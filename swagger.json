@@ -1,0 +1,596 @@
+{
+"openapi": "3.0.0",
+    "info": {
+      "title": "Bookstore API",
+      "version": "1.0.0",
+      "description": "An API for managing a bookstore's books, authors, and users."
+    },
+
+    "tags": [
+      {
+        "name": "Books",
+        "description": "Operations related to books"
+      },
+      {
+        "name": "Authors",
+        "description": "Operations related to authors"
+      },
+      {
+        "name": "Users",
+        "description": "Operations related to users"
+      }
+
+    ],
+    "paths": {
+      "/books":{ 
+        "get": {
+          "summary": "Get all books",
+          "security": [
+            {
+              "ApiKeyAuth": []
+            }
+          ],
+          "tags": ["Books"],
+          "responses": {
+            "200": {
+              "description": "A list of books in the database",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Book"} }}
+              }
+            }
+          }
+        },
+        "post": {
+          "summary": "Create a new book",
+          "tags": ["Books"],
+          "security": [
+            {
+              "ApiKeyAuth": []
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "description": "The title of the book",
+                      "example": "The Great Gatsby"
+                    },
+                    "author": {
+                      "type": "string",
+                      "description": "The author of the book",
+                      "example": "F. Scott Fitzgerald"
+                    },
+                    "publicationDate": {
+                      "type": "string",
+                      "format": "date",
+                      "description": "The date the book was published (YYYY-MM-DD)",
+                      "example": "1925-04-10"
+                    },
+                    "isbn": {
+                      "type": "string",
+                      "description": "The ISBN number for the book",
+                      "example": "978-0743273565"
+                    }
+                  },
+                  "required": ["title", "author", "publicationDate", "isbn"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Creates a book in the database",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Book"} }}
+              }
+            }
+          }
+        }
+      },
+      "/books/{id}": {
+        "patch": {
+        "summary": "Update a book",
+        "tags": ["Books"],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the book to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updates a book in the database based on the provided book id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"} }}
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a book",
+        "tags": ["Books"],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the book to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deletes a book in the database based on the provided book id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"} }}
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Gets a book",
+        "tags": ["Books"],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the book to retrieve",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Gets a book in the database based on the provided book id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"} }}
+            }
+          }
+        }
+      }
+      },
+      "/authors":{ 
+        "get": {
+          "summary": "Get all authors",
+          "tags": ["Authors"],
+          "security": [
+            {
+              "ApiKeyAuth": []
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "A list of authors in the database",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Author"} }}
+              }
+            }
+          }
+        },
+        "post": {
+          "summary": "Create a new author",
+          "tags": ["Authors"],
+          "security": [
+            {
+              "ApiKeyAuth": []
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the author",
+                      "example": "J R.R. Tolkien"
+                    },
+                    "bookList": {
+                      "type": "array",
+                      "description": "A list of books the author has published",
+                      "example": ["Fellowship of the Ring", "The Two Towers "]
+                    },
+                    "biography": {
+                      "type": "string",
+                      "description": "A brief bio for the author",
+                      "example": "A renowned fantasy author writing in the early 20th century"
+                    }
+                  },
+                  "required": ["name", "bookList", "biography"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Creates an author in the database",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Author"} }}
+              }
+            }
+          }
+        }
+      },
+      "/authors/{id}": {
+        "patch": {
+        "summary": "Update an author",
+        "tags": ["Authors"],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the author to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updates a book in the database based on the provided book id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Author"} }}
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an author",
+        "tags": ["Authors"],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the author to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deletes an author in the database based on the provided book id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Author"} }}
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Gets an author",
+        "tags": ["Authors"],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the author to retrieve",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Gets an author in the database based on the provided book id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Author"} }}
+            }
+          }
+        }
+      }
+      },
+      "/users":{ 
+        "get": {
+          "summary": "Get all users",
+          "tags": ["Users"],
+          "security": [
+            {
+              "ApiKeyAuth": []
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "A list of users in the database",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/User"} }}
+              }
+            }
+          }
+        },
+        "post": {
+          "summary": "Create a new user",
+          "tags": ["Users"],
+          "security": [
+            {
+              "ApiKeyAuth": []
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the user",
+                      "example": "John Doe"
+                    },
+                    "booksPurchased": {
+                      "type": "array",
+                      "description": "A list of books the user has pruchased",
+                      "example": ["Fellowship of the Ring", "A Court of Thorns and Roses "]
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "The user's email",
+                      "example": "jon.doe@example.com"
+                    }
+                  },
+                  "required": ["name", "booksPurchased", "email"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Creates a user in the database",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/User"} }}
+              }
+            }
+          }
+        }
+      },
+      "/user/{id}": {
+        "patch": {
+        "summary": "Update a user",
+        "tags": ["Users"],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the author to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updates a user in the database based on the provided user id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"} }}
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a user",
+        "tags": ["Users"],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the user to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deletes a user in the database based on the provided user id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"} }}
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Gets a user",
+        "tags": ["Users"],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the user to retrieve",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Gets a user in the database based on the provided user id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"} }}
+            }
+          }
+        }
+      },
+"components": {
+  "securitySchemes": {
+    "ApiKeyAuth": {
+      "type": "apiKey",
+      "name": "x-api-key",
+      "in": "header"
+    }
+  },
+  "schemas": {
+    "Book": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string",
+      "description": "The unique identifier for the book"  },
+        "title": { "type": "string" ,
+      "description": "The title of the book" },
+        "author": { "type": "string" ,
+        "description": "The author of the book" },
+        "publicationDate": { "type": "string", 
+        "description": "The date the book was published" },
+        "isbn": { "type": "string" ,
+        "description": "The ISBN number for the book" }
+      }
+    },
+    "Author": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string",
+      "description": "The unique identifier for the author" },
+        "name": { "type": "string",
+      "description": "The name of the author"  },
+        "bookList": { "type": "array" ,
+      "description": "The books the identified author has writte" },
+        "biography": { "type": "string",
+      "description": "A biography of the author"  }
+      }
+    },
+  "User": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" ,
+        "description": "The user's given name" },
+        "email": { "type": "string",
+        "description": "The user's email" },
+        "booksPurchased": { 
+          "type": "array" ,
+          "items": {"type": "string"},
+      "description": "A list of book the user' has purchased"}
+      }
+    }
+  }
+}
+}
+}
+}
+
+     
