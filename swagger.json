@@ -5,6 +5,10 @@
       "version": "1.0.0",
       "description": "An API for managing a bookstore's books, authors, and users."
     },
+ "externalDocs": {
+    "description": "Full API Documentation on GitHub",
+    "url": "https://github.com/sarbear28/Bookstore-API"
+  },
 
     "tags": [
       {
